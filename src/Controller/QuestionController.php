@@ -40,11 +40,9 @@ class QuestionController extends AbstractController
      */
     public function show(string $slug, MarkdownHelper $markdownHelper): Response
     {
-        if($this->isDebug){
+        if($this->isDebug) {
             $this->logger->info('We are in debug mode.');
         }
-
-        throw new \Exception('Bad thing happened.');
 
         $answers = [
             'Make sure your cat is sitting `purrrfectly` still 🤣',
