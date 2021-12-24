@@ -65,13 +65,15 @@ EOF
         $entityManager->persist($question);
         $entityManager->flush();
 
-        return new Response(sprintf('The new question ID is %d, slug %s', $question->getId(), $question->getSlug()));
+        return new Response(
+            sprintf('The new question ID is %d, slug %s', $question->getId(), $question->getSlug())
+        );
     }
 
     /**
      * @Route("/questions/{slug}", name="app_question_show")
      */
-    public function show(string $slug, MarkdownHelper $markdownHelper): Response
+    public function show(string $slug, MarkdownHelper $markdownHelper, EntityManagerInterface $entityManager): Response
     {
         if($this->isDebug) {
             $this->logger->info('We are in debug mode.');
@@ -82,6 +84,13 @@ EOF
             'Honestly, I like furry shoes better than MY cat',
             'Maybe... try saying the spell backwards?',
         ];
+
+        $repository = $entityManager->getRepository(Question::class);
+        $question = $repository->findOneBy(['slug' => $slug]);
+
+        if(!$question) throw $this->createNotFoundException(sprintf('Question not found for slug %s.', $slug));
+
+        dd($question);
 
         $questionText = "I've been turned into a cat, any *thoughts* on how to turn back? While I'm **adorable**, I don't really care for cat food.";
         $parsedQuestionText = $markdownHelper->parse($questionText);
