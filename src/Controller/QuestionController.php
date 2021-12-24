@@ -51,7 +51,9 @@ opening the front door and walking out! I've been out all afternoon
 (with no pants mind you) searching for them.
 Does anyone have a spell to call your pants back?
 EOF
-            );
+            )
+            ->setVotes(rand(-20, 50))
+        ;
 
         if(rand(1, 10) > 2){
             $question->setAskedAt(new \DateTime(sprintf('-%d days', rand(1, 100))));
