@@ -90,15 +90,9 @@ EOF
 
         if(!$question) throw $this->createNotFoundException(sprintf('Question not found for slug %s.', $slug));
 
-        dd($question);
-
-        $questionText = "I've been turned into a cat, any *thoughts* on how to turn back? While I'm **adorable**, I don't really care for cat food.";
-        $parsedQuestionText = $markdownHelper->parse($questionText);
-
         return $this->render('question/show.html.twig', [
-            'question' => ucwords(str_replace('-', ' ', $slug)),
+            'question' => $question,
             'answers' => $answers,
-            'questionText' => $parsedQuestionText,
         ]);
     }
 
