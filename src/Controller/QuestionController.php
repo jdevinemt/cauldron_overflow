@@ -4,14 +4,11 @@ namespace App\Controller;
 
 use App\Entity\Question;
 use App\Repository\QuestionRepository;
-use App\Service\MarkdownHelper;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
-use Sentry\State\HubInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Twig\Environment;
 
 class QuestionController extends AbstractController
 {
@@ -71,7 +68,7 @@ EOF
     /**
      * @Route("/questions/{slug}", name="app_question_show")
      */
-    public function show(string $slug, MarkdownHelper $markdownHelper, EntityManagerInterface $entityManager): Response
+    public function show(Question $question): Response
     {
         if($this->isDebug) {
             $this->logger->info('We are in debug mode.');
@@ -82,11 +79,6 @@ EOF
             'Honestly, I like furry shoes better than MY cat',
             'Maybe... try saying the spell backwards?',
         ];
-
-        $repository = $entityManager->getRepository(Question::class);
-        $question = $repository->findOneBy(['slug' => $slug]);
-
-        if(!$question) throw $this->createNotFoundException(sprintf('Question not found for slug %s.', $slug));
 
         return $this->render('question/show.html.twig', [
             'question' => $question,
