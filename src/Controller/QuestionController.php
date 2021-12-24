@@ -7,6 +7,7 @@ use App\Repository\QuestionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -88,4 +89,24 @@ EOF
         ]);
     }
 
+
+    /**
+     * @Route("/questions/{slug}/vote", name="app_question_vote", methods={"POST"})
+     */
+    public function vote(Question $question, Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $direction = $request->request->get('direction');
+
+        if($direction === 'up'){
+            $question->upVote();
+        }else if($direction === 'down'){
+            $question->downVote();
+        }
+
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_question_show', [
+            'slug' => $question->getSlug()
+        ]);
+    }
 }
