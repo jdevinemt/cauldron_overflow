@@ -13,7 +13,7 @@ class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager)
     {
-        QuestionFactory::createMany(20);
+        $questions = QuestionFactory::createMany(20);
 
         QuestionFactory::new()
             ->unpublished()
@@ -21,7 +21,9 @@ class AppFixtures extends Fixture
             ->create()
         ;
 
-       AnswerFactory::createMany(100);
+       AnswerFactory::createMany(100, fn() => [
+           'question' => $questions[array_rand($questions)],
+       ]);
 
         $manager->flush();
     }
