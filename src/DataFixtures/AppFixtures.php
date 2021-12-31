@@ -9,13 +9,16 @@ use Doctrine\Persistence\ObjectManager;
 
 class AppFixtures extends Fixture
 {
-    public function load(ObjectManager $manager): void
+    public function load(ObjectManager $manager)
     {
         QuestionFactory::createMany(20);
+
         QuestionFactory::new()
             ->unpublished()
             ->many(5)
             ->create()
         ;
+
+        $manager->flush();
     }
 }

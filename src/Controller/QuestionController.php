@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Question;
 use App\Repository\QuestionRepository;
+use App\Service\MarkdownHelper;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -13,8 +14,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class QuestionController extends AbstractController
 {
-    private LoggerInterface $logger;
-    private bool $isDebug;
+    private $logger;
+    private $isDebug;
 
     public function __construct(LoggerInterface $logger, bool $isDebug)
     {
@@ -22,10 +23,11 @@ class QuestionController extends AbstractController
         $this->isDebug = $isDebug;
     }
 
+
     /**
      * @Route("/", name="app_homepage")
      */
-    public function homepage(QuestionRepository $repository): Response
+    public function homepage(QuestionRepository $repository)
     {
         $questions = $repository->findAllAskedOrderedByNewest();
 
@@ -37,18 +39,18 @@ class QuestionController extends AbstractController
     /**
      * @Route("/questions/new")
      */
-    public function new(EntityManagerInterface $entityManager): Response
+    public function new()
     {
-        return new Response('Not implemented.');
+        return new Response('Sounds like a GREAT feature for V2!');
     }
 
     /**
      * @Route("/questions/{slug}", name="app_question_show")
      */
-    public function show(Question $question): Response
+    public function show(Question $question)
     {
-        if($this->isDebug) {
-            $this->logger->info('We are in debug mode.');
+        if ($this->isDebug) {
+            $this->logger->info('We are in debug mode!');
         }
 
         $answers = [
@@ -63,17 +65,16 @@ class QuestionController extends AbstractController
         ]);
     }
 
-
     /**
-     * @Route("/questions/{slug}/vote", name="app_question_vote", methods={"POST"})
+     * @Route("/questions/{slug}/vote", name="app_question_vote", methods="POST")
      */
-    public function vote(Question $question, Request $request, EntityManagerInterface $entityManager): Response
+    public function questionVote(Question $question, Request $request, EntityManagerInterface $entityManager)
     {
         $direction = $request->request->get('direction');
 
-        if($direction === 'up'){
+        if ($direction === 'up') {
             $question->upVote();
-        }else if($direction === 'down'){
+        } elseif ($direction === 'down') {
             $question->downVote();
         }
 

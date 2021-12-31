@@ -15,8 +15,8 @@ class Question
     use TimestampableEntity;
 
     /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
     private $id;
@@ -107,7 +107,7 @@ class Question
 
     public function getVotesString(): string
     {
-        $prefix = $this->getVotes() > 0 ? '+' : '-';
+        $prefix = $this->getVotes() >=0 ? '+' : '-';
 
         return sprintf('%s %d', $prefix, abs($this->getVotes()));
     }

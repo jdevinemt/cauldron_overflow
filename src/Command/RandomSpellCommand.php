@@ -3,7 +3,6 @@
 namespace App\Command;
 
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -11,23 +10,22 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-#[AsCommand(
-    name: 'app:random-spell',
-    description: 'Cast a random spell!',
-)]
 class RandomSpellCommand extends Command
 {
-    private LoggerInterface $logger;
+    protected static $defaultName = 'app:random-spell';
+    private $logger;
 
     public function __construct(LoggerInterface $logger)
     {
-        parent::__construct();
         $this->logger = $logger;
+
+        parent::__construct();
     }
 
-    protected function configure(): void
+    protected function configure()
     {
         $this
+            ->setDescription('Cast a random spell!')
             ->addArgument('your-name', InputArgument::OPTIONAL, 'Your name')
             ->addOption('yell', null, InputOption::VALUE_NONE, 'Yell?')
         ;
@@ -62,6 +60,6 @@ class RandomSpellCommand extends Command
 
         $io->success($spell);
 
-        return Command::SUCCESS;
+        return 0;
     }
 }

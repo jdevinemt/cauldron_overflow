@@ -6,7 +6,7 @@
 <div class="container">
     <div class="row">
         <div class="col-12">
-            <h2 class="my-4">Question</h2>
+            <h2 class="my-4">Question:</h2>
             <div style="box-shadow: 2px 3px 9px 4px rgba(0,0,0,0.04);">
                 <div class="q-container-show p-4">
                     <div class="row">
@@ -21,13 +21,14 @@
                                         (unpublished)
                                     {% endif %}
                                 </small>
-                                <div class="vote-arrows vote-arrows-alt flex-fill pt-2" style="min-width: 90px;">
-                                    <form action="{{ path('app_question_vote', {slug: question.slug}) }}" method="POST">
+
+                                <form action="{{ path('app_question_vote', { slug: question.slug }) }}" method="POST">
+                                    <div class="vote-arrows vote-arrows-alt flex-fill pt-2" style="min-width: 90px;">
                                         <button class="vote-up btn btn-link" name="direction" value="up"><i class="far fa-arrow-alt-circle-up"></i></button>
                                         <button class="vote-down btn btn-link" name="direction" value="down"><i class="far fa-arrow-alt-circle-down"></i></button>
-                                        {{ question.votesString }}
-                                    </form>
-                                </div>
+                                        <span>{{ question.votesString }}</span>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                         <div class="col">
@@ -49,21 +50,42 @@
         <button class="btn btn-sm btn-secondary">Submit an Answer</button>
     </div>
 
+
+
     <ul class="list-unstyled">
         {% for answer in answers %}
             <li class="mb-4">
-                <div class="d-flex justify-content-center">
-                    <div class="mr-2 pt-2">
+                <div class="row">
+                    <div class="col-1">
                         <img src="{{ asset('images/tisha.png') }}" width="50" height="50" alt="Tisha avatar">
                     </div>
-                    <div class="mr-3 pt-2">
+                    <div class="col-9">
                         {{ answer|parse_markdown }}
                         <p>-- Mallory</p>
                     </div>
-                    <div class="vote-arrows flex-fill pt-2 js-vote-arrows" style="min-width: 90px;">
-                        <a class="vote-up" href="#" data-direction="up"><i class="far fa-arrow-alt-circle-up"></i></a>
-                        <a class="vote-down" href="#" data-direction="down"><i class="far fa-arrow-alt-circle-down"></i></a>
-                        <span>+ <span class="js-vote-total">6</span></span>
+                    <div class="col-2 text-end">
+                        <div
+                            class="vote-arrows"
+                            {{ stimulus_controller('answer-vote', {
+                                url: path('answer_vote', {
+                                    id: 10
+                                })
+                            }) }}
+                        >
+                            <button
+                                class="vote-up btn btn-link"
+                                name="direction"
+                                value="up"
+                                {{ stimulus_action('answer-vote', 'clickVote') }}
+                            ><i class="far fa-arrow-alt-circle-up"></i></button>
+                            <button
+                                class="vote-down btn btn-link"
+                                name="direction"
+                                value="down"
+                                {{ stimulus_action('answer-vote', 'clickVote') }}
+                            ><i class="far fa-arrow-alt-circle-down"></i></button>
+                            <span>+ <span {{ stimulus_target('answer-vote', 'voteTotal') }}>6</span></span>
+                        </div>
                     </div>
                 </div>
             </li>
