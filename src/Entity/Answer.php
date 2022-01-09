@@ -97,6 +97,13 @@ class Answer
         return $this->question;
     }
 
+    public function getQuestionText(): string
+    {
+        if(!$this->getQuestion()) return '';
+
+        return (string) $this->getQuestion()->getQuestion();
+    }
+
     public function setQuestion(?Question $question): self
     {
         $this->question = $question;
