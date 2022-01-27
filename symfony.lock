@@ -142,6 +142,9 @@
     "pagerfanta/core": {
         "version": "v3.5.2"
     },
+    "pagerfanta/doctrine-orm-adapter": {
+        "version": "v3.5.2"
+    },
     "php": {
         "version": "7.2.5"
     },
