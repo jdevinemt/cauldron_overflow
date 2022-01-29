@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20211231210451 extends AbstractMigration
+final class Version20210902182514 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,16 +20,14 @@ final class Version20211231210451 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE answer ADD question_id INT NOT NULL');
-        $this->addSql('ALTER TABLE answer ADD CONSTRAINT FK_DADD4A251E27F6BF FOREIGN KEY (question_id) REFERENCES question (id)');
-        $this->addSql('CREATE INDEX IDX_DADD4A251E27F6BF ON answer (question_id)');
+        $this->addSql('ALTER TABLE answer ADD status VARCHAR(15) NOT NULL');
+        $this->addSql('ALTER TABLE answer RENAME INDEX idx_9474526c1e27f6bf TO IDX_DADD4A251E27F6BF');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE answer DROP FOREIGN KEY FK_DADD4A251E27F6BF');
-        $this->addSql('DROP INDEX IDX_DADD4A251E27F6BF ON answer');
-        $this->addSql('ALTER TABLE answer DROP question_id');
+        $this->addSql('ALTER TABLE answer DROP status');
+        $this->addSql('ALTER TABLE answer RENAME INDEX idx_dadd4a251e27f6bf TO IDX_9474526C1E27F6BF');
     }
 }

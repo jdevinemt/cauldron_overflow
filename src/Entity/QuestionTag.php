@@ -32,11 +32,11 @@ class QuestionTag
     /**
      * @ORM\Column(type="datetime_immutable")
      */
-    private $taggetAt;
+    private $taggedAt;
 
     public function __construct()
     {
-        $this->taggetAt  = new \DateTimeImmutable();
+        $this->taggedAt = new \DateTimeImmutable();
     }
 
     public function getId(): ?int
@@ -68,14 +68,14 @@ class QuestionTag
         return $this;
     }
 
-    public function getTaggetAt(): ?\DateTimeImmutable
+    public function getTaggedAt(): ?\DateTimeImmutable
     {
-        return $this->taggetAt;
+        return $this->taggedAt;
     }
 
-    public function setTaggetAt(\DateTimeImmutable $taggetAt): self
+    public function setTaggedAt(\DateTimeImmutable $taggedAt): self
     {
-        $this->taggetAt = $taggetAt;
+        $this->taggedAt = $taggedAt;
 
         return $this;
     }

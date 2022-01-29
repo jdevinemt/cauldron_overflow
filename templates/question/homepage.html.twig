@@ -14,7 +14,6 @@
         </div>
     </div>
     <div class="row">
-
         {% for question in pager %}
         <div class="col-12 mb-3">
             <div style="box-shadow: 2px 3px 9px 4px rgba(0,0,0,0.04);">
@@ -41,7 +40,7 @@
                 </div>
                 <a class="answer-link" href="{{ path('app_question_show', { slug: question.slug }) }}" style="color: #fff;">
                     <p class="q-display-response text-center p-3">
-                        <i class="fa fa-magic magic-wand"></i> {{ question.approvedAnswers|length }} answers
+                        <i class="fa fa-magic magic-wand"></i> {{ question.approvedAnswers|length}} answers
                     </p>
                 </a>
             </div>

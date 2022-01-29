@@ -5,18 +5,17 @@ namespace App\Entity;
 use App\Repository\AnswerRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
-use http\Exception\InvalidArgumentException;
 
 /**
  * @ORM\Entity(repositoryClass=AnswerRepository::class)
  */
 class Answer
 {
-    use TimestampableEntity;
+    public const STATUS_NEEDS_APPROVAL = 'needs_approval';
+    public const STATUS_SPAM = 'spam';
+    public const STATUS_APPROVED = 'approved';
 
-    const STATUS_NEEDS_APPROVAL = 'needs_approval';
-    const STATUS_SPAM = 'spam';
-    const STATUS_APPROVED = 'approved';
+    use TimestampableEntity;
 
     /**
      * @ORM\Id
@@ -99,7 +98,9 @@ class Answer
 
     public function getQuestionText(): string
     {
-        if(!$this->getQuestion()) return '';
+        if (!$this->getQuestion()) {
+            return '';
+        }
 
         return (string) $this->getQuestion()->getQuestion();
     }
@@ -111,20 +112,6 @@ class Answer
         return $this;
     }
 
-    public function upVote(): self
-    {
-        $this->votes++;
-
-        return $this;
-    }
-
-    public function downVote(): self
-    {
-        $this->votes--;
-
-        return $this;
-    }
-
     public function getStatus(): ?string
     {
         return $this->status;
@@ -132,11 +119,9 @@ class Answer
 
     public function setStatus(string $status): self
     {
-        if(!in_array($status, [
-            self::STATUS_NEEDS_APPROVAL,
-            self::STATUS_SPAM,
-            self::STATUS_APPROVED,
-        ])) throw new InvalidArgumentException(sprintf('Invalid status "%s"', $status));
+        if (!in_array($status, [self::STATUS_NEEDS_APPROVAL, self::STATUS_SPAM, self::STATUS_APPROVED])) {
+            throw new \InvalidArgumentException(sprintf('Invalid status "%s"', $status));
+        }
 
         $this->status = $status;
 

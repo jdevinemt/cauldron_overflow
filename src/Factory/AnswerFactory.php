@@ -28,6 +28,13 @@ use Zenstruck\Foundry\Proxy;
  */
 final class AnswerFactory extends ModelFactory
 {
+    public function __construct()
+    {
+        parent::__construct();
+
+        // TODO inject services if required (https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#factories-as-services)
+    }
+
     public function needsApproval(): self
     {
         return $this->addState(['status' => Answer::STATUS_NEEDS_APPROVAL]);
@@ -38,11 +45,19 @@ final class AnswerFactory extends ModelFactory
         return [
             'content' => self::faker()->text(),
             'username' => self::faker()->userName(),
-            'votes' => self::faker()->numberBetween(-20, 50),
             'createdAt' => self::faker()->dateTimeBetween('-1 year'),
+            'votes' => rand(-20, 50),
             'question' => QuestionFactory::new()->unpublished(),
             'status' => Answer::STATUS_APPROVED,
         ];
+    }
+
+    protected function initialize(): self
+    {
+        // see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#initialization
+        return $this
+            // ->afterInstantiate(function(Answer $answer) {})
+        ;
     }
 
     protected static function getClass(): string

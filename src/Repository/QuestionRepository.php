@@ -23,10 +23,10 @@ class QuestionRepository extends ServiceEntityRepository
     public function createAskedOrderedByNewestQueryBuilder(): QueryBuilder
     {
         return $this->addIsAskedQueryBuilder()
-            ->leftJoin('q.questionTags', 'question_tag')
-            ->join('question_tag.tag', 'tag')
-            ->addSelect(['question_tag', 'tag'])
             ->orderBy('q.askedAt', 'DESC')
+            ->leftJoin('q.questionTags', 'question_tag')
+            ->innerJoin('question_tag.tag', 'tag')
+            ->addSelect('question_tag', 'tag')
         ;
     }
 
