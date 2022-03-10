@@ -36,7 +36,7 @@
                         {% endif %}
                     </ul>
 
-                    {% if is_granted('ROLE_USER') %}
+                    {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
                         <a href="{{ path('app_logout') }}" class="nav-link text-black-50">Log Out</a>
                     {% else%}
                         <a href="{{ path('app_login') }}" class="nav-link text-black-50">Log In</a>
