@@ -45,7 +45,19 @@ class AppFixtures extends Fixture
             ];
         })->needsApproval()->many(20)->create();
 
-        UserFactory::createOne(['email' => 'joseph.devine.mt@gmail.com', 'firstName' => 'Joe']);
+        // default admin user
+        UserFactory::createOne([
+            'email' => 'admin@cauldronoverflow.com',
+            'firstName' => 'Admin',
+            'roles' => ['ROLE_ADMIN'],
+        ]);
+
+        UserFactory::createOne([
+            'email' => 'user@cauldronoverflow.com',
+            'firstName' => 'User',
+            'roles' => ['ROLE_USER'],
+        ]);
+
         UserFactory::createMany(10);
 
         $manager->flush();
