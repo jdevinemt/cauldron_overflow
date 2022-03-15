@@ -17,9 +17,28 @@ class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager)
     {
+        // default admin user
+        UserFactory::createOne([
+            'email' => 'admin@cauldronoverflow.com',
+            'firstName' => 'Admin',
+            'roles' => ['ROLE_ADMIN'],
+        ]);
+
+        UserFactory::createOne([
+            'email' => 'user@cauldronoverflow.com',
+            'firstName' => 'User',
+            'roles' => ['ROLE_USER'],
+        ]);
+
+        UserFactory::createMany(10);
+
         TagFactory::createMany(100);
 
-        $questions = QuestionFactory::createMany(20);
+        $questions = QuestionFactory::createMany(20, function(){
+            return [
+                'owner' => UserFactory::random(),
+            ];
+        });
 
         QuestionTagFactory::createMany(100, function() {
             return [
@@ -44,21 +63,6 @@ class AppFixtures extends Fixture
                 'question' => $questions[array_rand($questions)]
             ];
         })->needsApproval()->many(20)->create();
-
-        // default admin user
-        UserFactory::createOne([
-            'email' => 'admin@cauldronoverflow.com',
-            'firstName' => 'Admin',
-            'roles' => ['ROLE_ADMIN'],
-        ]);
-
-        UserFactory::createOne([
-            'email' => 'user@cauldronoverflow.com',
-            'firstName' => 'User',
-            'roles' => ['ROLE_USER'],
-        ]);
-
-        UserFactory::createMany(10);
 
         $manager->flush();
     }
